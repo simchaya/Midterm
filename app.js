@@ -5,8 +5,16 @@ const path = require('path');
 const mongoose = require('mongoose'); 
 require('dotenv').config();
 require('./config/passport');
-
+const Note = require ('./routes/notes');
+const {isLoggedIn} = require ('./middleware/auth')
 const app = express();
+
+mongoose.connect(process.env.MONGO_URI || "mongodb+srv://simchacb:JmRkdLn7EMrYaAQ5@simchacb.alvmivf.mongodb.net/test", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('Connected successfully to MongoDB'))
+  .catch((err) => console.error('Error connecting to MongoDB:', err));
 
 app.set('view engine', 'ejs');
 // if you delete this line, it will default to 'views' folder
@@ -42,19 +50,28 @@ app.get('/dashboard', isLoggedIn, (req, res) => {
 //Create routes
 
 app.get('/notes', isLoggedIn, async (req, res) => {
-    // Gets all noted for the current logged in user
-    res.send("hello")
-  
-  })
+  // Gets all noted for the current logged in user
+  //res.send("hello")
+  try {
+    // Fetch all notes from the database
+    const notes = await Note.find();
+    
+    // Respond with the notes
+    res.status(200).json(notes);
+  } catch (error) {
+    console.error('Error fetching notes:', error);
+    res.status(500).json({ message: 'Failed to fetch notes', error: error.message });
+  }
+});
 
 app.post('/notes', isLoggedIn, async (req, res) => {
   try {
     // Create a new note (hardcoded for test)
-    //next step: create a button to create a note in the ejs
+    //next step: create a button to create a note in the ejs  
     const myNote = new Note({
       title: "To finish today",
       content: "make food for tomorrow",
-      owner: req.user.id, // Assuming the logged-in user is accessible via `req.user`
+      //owner: req.user.id, // Assuming the logged-in user is accessible via `req.user`
       category: "ToDo",
     });
 
@@ -69,21 +86,34 @@ app.post('/notes', isLoggedIn, async (req, res) => {
   }
 });
 
-
-/*app.get('/:id', isLoggedIn, async (req, res) => {
+app.get('/:id', isLoggedIn, async (req, res) => {
   // Get a specific note
+  try {
+    const noteId = req.params.id;
+    
+    // Fetch the specific note by ID
+    const note = await Note.findById(noteId);
 
+    // Check if the note exists
+    if (!note) {
+      return res.status(404).json({ message: 'Note not found' });
+    }
 
-})*/
+    // Respond with the note
+    res.status(200).json(note);
+  } catch (error) {
+    console.error('Error fetching note:', error);
 
+    // Handle invalid ObjectId error
+    if (error.name === 'CastError') {
+      return res.status(400).json({ message: 'Invalid note ID format' });
+    }
 
-// Middleware to check if user is authenticated
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
+    // Send a generic error response
+    res.status(500).json({ message: 'Failed to fetch note', error: error.message });
   }
-  res.redirect('/');
-}
+
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
@@ -91,5 +121,4 @@ app.listen(PORT, () => {
   console.log(`Visit http://localhost:${PORT} to see the app`);
 });
 
-//connect to MongoDB
-mongoose.connect("mongodb+srv://simchacb:JmRkdLn7EMrYaAQ5@simchacb.alvmivf.mongodb.net/")
+

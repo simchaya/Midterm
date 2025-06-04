@@ -1,4 +1,4 @@
-const mongoose = require('mongoose'); //needed? without this it won't run
+const mongoose = require('mongoose'); 
 
 //creating a Note model
 const noteSchema = new mongoose.Schema({
@@ -10,3 +10,5 @@ const noteSchema = new mongoose.Schema({
   })
   
   const Note = mongoose.model('Notes', noteSchema);  
+
+  module.exports =  Note ;
