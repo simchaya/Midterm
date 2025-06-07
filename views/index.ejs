@@ -11,9 +11,7 @@
 
 <body>
     <h1>My Notes</h1>
-
     <!-- Form to add a new note -->
-
     <form action="/notes" method="POST" class="mb-4">
         <!-- Title -->
         <div class="mb-3">
@@ -37,7 +35,6 @@
         </div>
         <button type="submit" class="btn btn-primary">Add Note</button>
     </form>
-
     <!-- Display existing notes -->
     <div class="row">
         <% notes.forEach(note=> { %>
@@ -59,7 +56,6 @@
             </div>
             <% }) %>
     </div>
-
 </body>
 
 </html>
