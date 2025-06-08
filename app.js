@@ -104,6 +104,61 @@ app.get('/notes/:id', isLoggedIn, async (req, res) => {
   }
 });
 
+//task 5 edit and delete
+
+app.get('/notes/:id/edit', isLoggedIn, async (req, res) => {
+  try {
+    const noteId = req.params.id;
+
+    // Fetch the specific note by ID
+    const note = await Note.findById(noteId);
+
+    if (!note) {
+      return res.status(404).send('Note not found');
+    }
+
+    // Render an edit form with the note data
+    res.render('edit', { note, user: req.user });
+
+  } catch (error) {
+    console.error('Error fetching note for edit:', error);
+
+    if (error.name === 'CastError') {
+      return res.status(400).send('Invalid note ID format');
+    }
+
+    res.status(500).send('Failed to fetch note');
+  }
+});
+
+const methodOverride = require('method-override');
+app.use(methodOverride('_method')); // To support PUT and DELETE requests via forms
+
+
+app.put('/notes/:id', isLoggedIn, async (req, res) => {
+  try {
+    const noteId = req.params.id;
+    const { title, content, category } = req.body;
+
+    // Find the note by ID and update it
+    const updatedNote = await Note.findByIdAndUpdate(
+      noteId,
+      { title, content, category },
+      { new: true, runValidators: true } // Return the updated document
+    );
+
+    if (!updatedNote) {
+      return res.status(404).send('Note not found');
+    }
+
+    // Redirect to the updated note's page or notes list
+    res.redirect('/notes');
+  } catch (error) {
+    console.error('Error updating note:', error);
+    res.status(500).send('Failed to update note');
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

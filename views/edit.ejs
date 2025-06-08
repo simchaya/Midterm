@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Note</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Edit Note</h1>
+  <form action="/notes/<%= note._id %>?_method=PUT" method="POST">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" value="<%= note.title %>" required>
+    <br>
+    <label for="content">Content:</label>
+    <textarea id="content" name="content" required><%= note.content %></textarea>
+    <br>
+    <div>
+        <label for="category">Category:</label>
+        <select id="category" name="category" required>
+          <option value="ToDo" <%= note.category === 'ToDo' ? 'selected' : '' %>>ToDo</option>
+          <option value="NotesToSelf" <%= note.category === 'NotesToSelf' ? 'selected' : '' %>>NotesToSelf</option>
+          <option value="Shopping" <%= note.category === 'Shopping' ? 'selected' : '' %>>Shopping</option>
+          <option value="Other" <%= note.category === 'Other' ? 'selected' : '' %>>Other</option>
+        </select>
+      </div>
+      
+    <br>
+    <button type="submit">Save Changes</button>
+  </form>
+</body>
+</html>
