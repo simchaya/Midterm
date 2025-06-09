@@ -7,8 +7,6 @@
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #a368ab;
-    /* background-color: #f4f4f4; */
     background-color: #bba5d5; /* Light violet */
     color: #4c0082; /* Indigo */
     
@@ -29,7 +27,7 @@
   .auth-box {
     background-color: #c28dc377;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgb(189, 12, 12);
     padding: 30px;
     text-align: center;
   }
@@ -49,14 +47,14 @@
     justify-content: center;
     background-color: #6d48b7;
     color: #db7ea8;
-    border: 1px solid #c90e1bddd;
+    border: 1px solid #c90e1b;
     border-radius: 4px;
     padding: 10px 20px;
     font-size: 16px;
     font-weight: 500;
     text-decoration: none;
     transition: background-color 0.3s;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 10px rgb(189, 12, 12);
   }
   
   .google-btn:hover {
@@ -104,7 +102,6 @@
   }
   
   .auth-info {
-    "?
     background-color: #bb8ed1;
     border-radius: 8px;
     padding: 20px;
@@ -125,3 +122,33 @@
   .logout-btn:hover {
     background-color: #e82929;
   }
+
+  /* Styles for filtering by category */
+  form#filter-form {
+    margin-bottom: 20px;
+  }
+  
+  form#filter-form label {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  form#filter-form input[type="radio"] {
+    margin-right: 5px;
+  }
+  
+  .notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .note {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    width: calc(33.333% - 20px);
+    box-shadow: 0 2px 10px rgb(189, 12, 12);
+  }
+  
