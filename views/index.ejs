@@ -52,6 +52,10 @@
                         </p>
                         <a href="/notes/<%= note._id %>" class="btn btn-sm btn-info">View</a>
                         <a href="/notes/<%= note._id %>/edit">Edit</a>  
+                        <form action="/notes/<%= note._id %>?_method=DELETE" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                          </form>
+                          
                     </div>
                 </div>
             </div>

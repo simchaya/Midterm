@@ -159,6 +159,26 @@ app.put('/notes/:id', isLoggedIn, async (req, res) => {
   }
 });
 
+app.delete('/notes/:id', isLoggedIn, async (req, res) => {
+  try {
+    const noteId = req.params.id;
+
+    // Make sure the logged-in user owns the note before deleting
+    const note = await Note.findById(noteId);
+    if (!note) {
+      return res.status(404).send('Note not found');
+    }
+    if (note.owner.toString() !== req.user.id.toString()) {
+      return res.status(403).send('Unauthorized');
+    }
+    await Note.findByIdAndDelete(noteId);
+    res.redirect('/notes');
+  } catch (err) {
+    console.error('Error deleting note:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
