@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Note</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">  
-  <link rel="stylesheet" href="/styles.css"> 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
 </head>
+
 <body>
   <h1>Edit Note</h1>
   <form action="/notes/<%= note._id %>?_method=PUT" method="POST">
@@ -17,17 +19,18 @@
     <textarea id="content" name="content" required><%= note.content %></textarea>
     <br>
     <div>
-        <label for="category">Category:</label>
-        <select id="category" name="category" required>
-          <option value="ToDo" <%= note.category === 'ToDo' ? 'selected' : '' %>>ToDo</option>
-          <option value="NotesToSelf" <%= note.category === 'NotesToSelf' ? 'selected' : '' %>>NotesToSelf</option>
-          <option value="Shopping" <%= note.category === 'Shopping' ? 'selected' : '' %>>Shopping</option>
-          <option value="Other" <%= note.category === 'Other' ? 'selected' : '' %>>Other</option>
-        </select>
-      </div>
-      
+      <label for="category">Category:</label>
+      <select id="category" name="category" required>
+        <option value="ToDo" <%=note.category==='ToDo' ? 'selected' : '' %>>ToDo</option>
+        <option value="NotesToSelf" <%=note.category==='NotesToSelf' ? 'selected' : '' %>>NotesToSelf</option>
+        <option value="Shopping" <%=note.category==='Shopping' ? 'selected' : '' %>>Shopping</option>
+        <option value="Other" <%=note.category==='Other' ? 'selected' : '' %>>Other</option>
+      </select>
+    </div>
+
     <br>
     <button type="submit">Save Changes</button>
   </form>
 </body>
+
 </html>

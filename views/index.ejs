@@ -53,41 +53,35 @@
                             <%= note.category %>
                         </p>
                         <a href="/notes/<%= note._id %>" class="btn btn-sm btn-info">View</a>
-                        <a href="/notes/<%= note._id %>/edit">Edit</a>  
+                        <a href="/notes/<%= note._id %>/edit">Edit</a>
                         <form action="/notes/<%= note._id %>?_method=DELETE" method="POST" style="display:inline;">
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                          </form>
-                          
+                        </form>
+
                     </div>
                 </div>
             </div>
             <% }) %>
     </div>
 
+    <!-- Filter by category display -->
     <form id="filter-form" action="/notes" method="GET">
         <div>
-          <h3>Filter by Category</h3>
-          <% categories.forEach(cat => { %>
-            <label>
-              <input 
-                type="radio" 
-                name="category" 
-                value="<%= cat %>" 
-                <%= selectedCategory === cat ? 'checked' : '' %>>
-              <%= cat %>
-            </label>
-          <% }) %>
-          <label>
-            <input 
-              type="radio" 
-              name="category" 
-              value="" 
-              <%= !selectedCategory ? 'checked' : '' %>> 
-            Show All
-          </label>
+            <h3>Filter by Category</h3>
+            <% categories.forEach(cat=> { %>
+                <label>
+                    <input type="radio" name="category" value="<%= cat %>" <%=selectedCategory===cat ? 'checked' : ''
+                        %>>
+                    <%= cat %>
+                </label>
+                <% }) %>
+                    <label>
+                        <input type="radio" name="category" value="" <%=!selectedCategory ? 'checked' : '' %>>
+                        Show All
+                    </label>
         </div>
         <button type="submit" class="btn btn-primary">Filter</button>
-      </form>
+    </form>
 
 </body>
 

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Express Auth Demo</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
+
 <body>
   <div class="container">
     <h1>Dashboard</h1>
@@ -14,10 +16,12 @@
         <div class="user-profile">
           <% if (user.photo) { %>
             <img src="<%= user.photo %>" alt="Profile Picture" class="profile-pic">
-          <% } %>
-          <h2>Welcome, <%= user.displayName %>!</h2>
-          <p>Email: <%= user.email %></p>
-          <p>Google ID: <%= user.id %></p>
+            <% } %>
+              <h2>Welcome, <%= user.displayName %>!</h2>
+              <p>Email: <%= user.email %>
+              </p>
+              <p>Google ID: <%= user.id %>
+              </p>
         </div>
         <div class="auth-info">
           <h3>Authentication Success!</h3>
@@ -25,11 +29,12 @@
           <p>In a real application, you would now have access to protected resources.</p>
         </div>
         <a href="/logout" class="logout-btn">Logout</a>
-      <% } else { %>
-        <p>You need to login to view this page.</p>
-        <a href="/" class="login-link">Go to Login</a>
-      <% } %>
+        <% } else { %>
+          <p>You need to login to view this page.</p>
+          <a href="/" class="login-link">Go to Login</a>
+          <% } %>
     </div>
   </div>
 </body>
+
 </html>

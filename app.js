@@ -44,19 +44,6 @@ app.get('/dashboard', isLoggedIn, (req, res) => {
   res.render('dashboard', { user: req.user });
 });
 
-//Create routes
-
-// app.get('/notes', isLoggedIn, async (req, res) => {
-//   // Gets all noted for the current logged in user
-//   try {
-//     const notes = await Note.find({ owner: req.user.id }); // Fetch notes for logged-in user
-//     res.render('index', { notes, user: req.user }); // Render the index view with notes
-//   } catch (err) {
-//     console.error('Error fetching notes:', err);
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
-
 //merged get /notes route for fetching all notes and fetching notes filtered by category
 
 app.get('/notes', isLoggedIn, async (req, res) => {
@@ -71,11 +58,11 @@ app.get('/notes', isLoggedIn, async (req, res) => {
     const notes = await Note.find(filter); // Fetch filtered or all notes
     const categories = await Note.distinct('category', { owner: req.user.id }); // Get distinct categories
 
-    res.render('index', { 
-      notes, 
-      categories, 
-      user: req.user, 
-      selectedCategory: category || '' 
+    res.render('index', {
+      notes,
+      categories,
+      user: req.user,
+      selectedCategory: category || ''
     });
   } catch (err) {
     console.error('Error fetching notes:', err);
@@ -204,25 +191,6 @@ app.delete('/notes/:id', isLoggedIn, async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
-// app.get('/notes', isLoggedIn, async (req, res) => {
-//   try {
-//     const { category } = req.query; // Get category from query string
-//     const filter = { owner: req.user.id }; // Default filter
-
-//     if (category) {
-//       filter.category = category; // Add category to filter if provided
-//     }
-
-//     const notes = await Note.find(filter); // Fetch filtered notes
-//     const categories = await Note.distinct('category', { owner: req.user.id }); // Get distinct categories for filter UI
-
-//     res.render('index', { notes, categories, user: req.user, selectedCategory: category || '' });
-//   } catch (err) {
-//     console.error('Error fetching notes:', err);
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

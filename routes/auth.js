@@ -8,16 +8,16 @@ router.get('/auth/google',
 );
 
 // Callback (what happens when Google is done processing)
-router.get('/auth/google/callback', 
-  passport.authenticate('google', { 
-    failureRedirect: '/', 
+router.get('/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/',
     successRedirect: '/dashboard'
   })
 );
 
 // Logging out
 router.get('/logout', (req, res) => {
-  req.logout(function(err) {
+  req.logout(function (err) {
     if (err) { return next(err); }
     res.redirect('/');
   });
