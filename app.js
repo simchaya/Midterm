@@ -9,6 +9,7 @@ const Note = require('./models/notes');
 const { isLoggedIn } = require('./middleware/auth')
 const app = express();
 
+//connect to MongoDB (task 1)
 mongoose.connect('mongodb+srv://simchacb:JmRkdLn7EMrYaAQ5@simchacb.alvmivf.mongodb.net/test', {
 })
   .then(() => console.log('Connected successfully to MongoDB'))
@@ -44,7 +45,7 @@ app.get('/dashboard', isLoggedIn, (req, res) => {
   res.render('dashboard', { user: req.user });
 });
 
-//merged get /notes route for fetching all notes and fetching notes filtered by category
+//merged get('/notes'...) route for getting all notes for current user (task 2 & 3) and filter notes list by category (task 6)
 
 app.get('/notes', isLoggedIn, async (req, res) => {
   try {
@@ -70,10 +71,10 @@ app.get('/notes', isLoggedIn, async (req, res) => {
   }
 });
 
+// Create a new note (task 2 & 3)
 app.post('/notes', isLoggedIn, async (req, res) => {
   try {
 
-    // Create a new note  
     const { title, content, category } = req.body;
 
     const newNote = new Note({
@@ -94,11 +95,11 @@ app.post('/notes', isLoggedIn, async (req, res) => {
   }
 });
 
+// Get a specific note by ID (task 2 & 3)
 app.get('/notes/:id', isLoggedIn, async (req, res) => {
   try {
     const noteId = req.params.id;
 
-    // Fetch the specific note by ID
     const note = await Note.findById(noteId);
 
     if (!note) {
@@ -117,13 +118,12 @@ app.get('/notes/:id', isLoggedIn, async (req, res) => {
   }
 });
 
-//task 5 edit and delete
-
+//Edit a note (task 4)
 app.get('/notes/:id/edit', isLoggedIn, async (req, res) => {
   try {
     const noteId = req.params.id;
 
-    // Fetch the specific note by ID
+    // Fetch a specific note by ID
     const note = await Note.findById(noteId);
 
     if (!note) {
@@ -147,7 +147,7 @@ app.get('/notes/:id/edit', isLoggedIn, async (req, res) => {
 const methodOverride = require('method-override');
 app.use(methodOverride('_method')); // To support PUT and DELETE requests via forms
 
-
+//Edit a note (task 4)
 app.put('/notes/:id', isLoggedIn, async (req, res) => {
   try {
     const noteId = req.params.id;
@@ -172,6 +172,7 @@ app.put('/notes/:id', isLoggedIn, async (req, res) => {
   }
 });
 
+//Delete a note (task 4)
 app.delete('/notes/:id', isLoggedIn, async (req, res) => {
   try {
     const noteId = req.params.id;
@@ -189,6 +190,38 @@ app.delete('/notes/:id', isLoggedIn, async (req, res) => {
   } catch (err) {
     console.error('Error deleting note:', err);
     res.status(500).send('Internal Server Error');
+  }
+});
+
+// API endpoint to get all notes in JSON format (task 5)
+app.get('/api/notes', isLoggedIn, async (req, res) => {
+  try {
+    const notes = await Note.find({ owner: req.user.id });
+    res.json(notes);
+  } catch (err) {
+    console.error('Error fetching notes:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// API endpoint to create a note via JSON (task 5)
+app.post('/api/notes', isLoggedIn, async (req, res) => {
+  try {
+    const { title, content, category } = req.body;
+
+    const newNote = new Note({
+      title,
+      content,
+      owner: req.user.id,
+      category,
+    });
+
+    await newNote.save();
+
+    res.status(201).json({ message: 'Note created successfully', note: newNote });
+  } catch (err) {
+    console.error('Error creating note:', err);
+    res.status(500).json({ message: 'Failed to create note', error: err.message });
   }
 });
 
